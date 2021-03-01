@@ -1,0 +1,11 @@
+# Misc
+result
+samples
+*.mp3
+
+# Cache
+__pycache__
+*.pyc
+
+# IDE
+.vscode
