@@ -36,23 +36,29 @@ class CustomTTS():
                     overrides={'frame_rate': self.normal_frame_rate}
                 )
             else:
-                if not os.path.isfile('samples/%s.mp3' % letter):
-                    tts = gTTS(letter, lang=self.lang)
-                    tts.save('samples/%s.mp3' % letter)
+                try:
+                    if not os.path.isfile('samples/%s.mp3' % letter):
+                        tts = gTTS(letter, lang=self.lang)
+                        tts.save('samples/%s.mp3' % letter)
 
-                letter_sound = AudioSegment.from_mp3('samples/%s.mp3' % letter)
+                    letter_sound = AudioSegment.from_mp3(
+                        'samples/%s.mp3' % letter)
 
-                raw = letter_sound.raw_data[9000:-9000]
+                    raw = letter_sound.raw_data[9000:-9000]
 
-                octaves = 2.0 + random.random() * self.random_factor
-                frame_rate = int(letter_sound.frame_rate * (2.0 ** octaves))
-                print('%s >> octaves: %.2f, frame rate: %.d' %
-                      (letter, octaves, frame_rate))
+                    octaves = 2.0 + random.random() * self.random_factor
+                    frame_rate = int(
+                        letter_sound.frame_rate * (2.0 ** octaves))
+                    print('%s >> octaves: %.2f, frame rate: %.d' %
+                          (letter, octaves, frame_rate))
 
-                new_sound = letter_sound._spawn(
-                    raw,
-                    overrides={'frame_rate': frame_rate}
-                )
+                    new_sound = letter_sound._spawn(
+                        raw,
+                        overrides={'frame_rate': frame_rate}
+                    )
+                except Exception as e:
+                    print('Error >> {}, {}'.format(letter, e))
+                    continue
             new_sound = new_sound.set_frame_rate(self.normal_frame_rate)
             self.result_sound = new_sound if self.result_sound is None else self.result_sound + new_sound
 
