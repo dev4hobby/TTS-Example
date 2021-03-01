@@ -44,7 +44,7 @@ class CustomTTS():
                     letter_sound = AudioSegment.from_mp3(
                         'samples/%s.mp3' % letter)
 
-                    raw = letter_sound.raw_data[9000:-9000]
+                    raw = letter_sound.raw_data[8000:-8000]
 
                     octaves = 2.0 + random.random() * self.random_factor
                     frame_rate = int(
